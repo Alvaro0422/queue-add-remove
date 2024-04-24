@@ -1,5 +1,5 @@
 import { WithDefaultLayout } from "@/components/DefautLayout";
-import queueListAtom, { QueueData } from "@/data/queue";
+import queueListAtom from "@/data/queue";
 import { Page } from "@/types/Page";
 import { ColumnType } from "antd/es/table";
 import { Alert, Button, Col, Input, Row, Space, Table } from "antd";
@@ -15,11 +15,21 @@ interface CreateQueueFormData{
     row: number;
 }
 
-const queue: React.FC = () => {
+interface queueTableData{
+    value1?: string;
+    value2?: string;
+    value3?: string;
+}
+
+const queue: Page = () => {
+    // eslint-disable-next-line react-hooks/rules-of-hooks
     const [queue, setQueue] = useAtom(queueListAtom);
+    // eslint-disable-next-line react-hooks/rules-of-hooks
     const [isAlertVisible, setIsAlertVisible] = useState(false);
+    // eslint-disable-next-line react-hooks/rules-of-hooks
     const [isFailedAlertVisible, setIsFailedAlertVisible] = useState(false);
 
+    // eslint-disable-next-line react-hooks/rules-of-hooks
     const { handleSubmit, control, formState: {errors}, reset} = useForm<CreateQueueForm>({
         resolver: zodResolver(CreateQueueFormSchema),
         mode: 'onChange'
@@ -56,7 +66,7 @@ const queue: React.FC = () => {
 
     // const filteredDataSource = queue.filter(item => [1].includes(item.row));
 
-    const queueColumns: ColumnType<QueueData> = [
+    const queueColumns: ColumnType<queueTableData>[] = [
         // {title: 'name', dataIndex: 'name', render: (text: string) => text},
         {title: 'Cashier #1', dataIndex: 'value1', key: 'value1'},
         {title: 'Cashier #2', dataIndex: 'value2', key: 'value2'},
@@ -92,7 +102,7 @@ const queue: React.FC = () => {
         // console.log(tempName)
     }
 
-    return <>
+    return (<>
         <Row>
             <Col span={24}>
                 <h1>Queue</h1>
@@ -100,7 +110,7 @@ const queue: React.FC = () => {
         </Row>
         <Row>
             <Col span={24}>
-                <Table dataSource={data} columns={queueColumns}></Table>
+                <Table dataSource={data} columns={queueColumns} />
             </Col>
         </Row>
         {isAlertVisible && 
@@ -142,9 +152,9 @@ const queue: React.FC = () => {
 
                             <Row>
                                 <Col span={12}>
-                                    <Button onClick={() => onClickDeleteCashier(1)}>Handle Cashier #1</Button>
-                                    <Button onClick={() => onClickDeleteCashier(2)}>Handle Cashier #2</Button>
-                                    <Button onClick={() => onClickDeleteCashier(3)}>Handle Cashier #3</Button> 
+                                    <Button onClick={() => onClickDeleteCashier(1)} className="bg-red-500">Handle Cashier #1</Button>
+                                    <Button onClick={() => onClickDeleteCashier(2)} className="bg-red-500">Handle Cashier #2</Button>
+                                    <Button onClick={() => onClickDeleteCashier(3)} className="bg-red-500">Handle Cashier #3</Button> 
                                 </Col>
                             </Row>
 
@@ -154,6 +164,7 @@ const queue: React.FC = () => {
             </Row>
         </Space>
     </>
+    )
 }
 
 queue.layout = WithDefaultLayout;
